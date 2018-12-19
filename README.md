@@ -31,6 +31,8 @@ git clone https://github.com/FelipeCRamos/ELIS.git && cd ELIS
 And then, run the `make` command that will compile the entire project
 (check [dependencies](#dependencies)).
 
+Then, just run with `./elis [<file>]`.
+
 ## How to use
 This implementation it's kind of exotic, so here's the tutorial:
 
