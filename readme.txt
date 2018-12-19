@@ -1,0 +1,60 @@
+ELIS
+
+There are three modes on the editor, which are:
+
+    - NORMAL
+        When in this mode, you can use:
+        <ENTER> or <j>  : to go one line below.
+        <k>             : to go one line above.
+        <u>             : Undo what you have done.
+        <i>             : Enter in insert mode on current line.
+        <:>             : Enter in COMMAND INSERT mode.
+
+    - INSERT
+        <ESC>           : Go back to the NORMAL mode.
+        <any-key>       : Write it on the buffer. 
+
+    - COMMAND INSERT
+        <ESC>           : Cancel current command and go back to NORMAL mode.
+        <ENTER>         : Execute current command.
+        <any-key>       : Write it on the command buffer.
+       
+Available commands:
+
+    :W [<name>]         : Saves all lines of the buffer in an `name` ASCII file.
+                          If `name` isn't specified, simply saves on the actual
+                          file. If the actual filename wasn't provided, ELIS
+                          will ask for the `name` argument.
+
+    :E <name>           : Reads to the buffer all lines of an `name` ASCII file,
+                          If the specified file don't exist, an empty ASCII file 
+                          `name` will be created.
+    
+    :I [n]              : Enter in INSERT mode, being possible to insert text 
+                          before Nth line. If `n` isn't provided, text will be
+                          inserted ~before~ actual line.
+
+    :A [n]              : Enter in INSERT mode, being possible to insert text 
+                          after Nth line. If `n` isn't provided, text will be
+                          inserted ~after~ actual line.
+
+    :M [n]              : Makes Nth line the actual line. If `n` isn't provided,
+                          then the current line will be the last line on buffer.
+
+    :D [n [m]]          : Remove `n` to `m` lines. If only `n` is give, remove
+                          only that line. If no numbers are given, removes the 
+                          current line.
+
+    :H                  : Provides this help text.
+
+    :Q                  : Quits the program. If the actual text isn't saved, the
+                          program will show an alert asking for save.
+
+Authorship:
+
+    ~ Felipe Ramos      <felipecramos00@gmail.com>
+    ~ Daniel Guerra     <daniel.guerra13@hotmail.com>
+    ~ Paulo Augusto     <...@gmail.com>
+
+Project Mentor:
+    ~ Selan R. dos Santos   <selan.rds@gmail.com>

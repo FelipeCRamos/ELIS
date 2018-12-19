@@ -1,0 +1,577 @@
+%% ==========================================================================
+%% UFRN - CCET - DIMAp
+%%
+%% Author.....: Selan R. dos Santos
+%% Started on.: 28/08/2007
+%%
+%% Avaliador de Expressões Simples = AVES 
+%% Compilador de Expressões SIMplificado - CESIM
+%% Laboratório de Algoritmos e Estruturas de Dados - DIM0327
+%% Tema: Uso de pilhas, manipulação de arquivos, ponteiros.
+%% ==========================================================================
+
+
+% ****************************************************************************
+% Specifies the document class.
+% -----------------------------
+\documentclass[11pt,a4paper]{article}
+
+% Specifies the packages.
+\usepackage[portuges,brazil]{babel}
+\usepackage[OT1]{fontenc}
+%\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+%\usepackage{ae}
+\usepackage[ansinew]{inputenc}
+%\usepackage{colortbl}
+\usepackage{alltt}
+\usepackage{fancyhdr}
+%\usepackage{pst-node}
+\usepackage{amssymb,amsmath}
+\usepackage{array,booktabs}
+%\usepackage{float}
+\usepackage[margin=8pt,font={footnotesize,sf},labelfont=bf]{caption}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+\usepackage{paralist} % itens dentro de parágrafo
+%\usepackage{wrapfig}
+%\usepackage{multirow}
+\usepackage{mdwlist}
+%\usepackage{algorithm2e}
+%\usepackage{auto-pst-pdf}
+\usepackage{float}
+\usepackage[margin=10pt,font={footnotesize,sf},labelfont=bf]{caption}
+\usepackage{listings}
+%****************************************************************************
+%\usepackage{pdfcolmk} % to avoid glitches caused by color in pdf
+%\usepackage{graphicx}
+%%\usepackage[usenames,dvipsnames]{color}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage[linesnumbered]{algorithm2e}
+
+
+ \definecolor{myaqua}{rgb}{0.0,0.5,0.55}
+ \definecolor{lightaqua}{rgb}{0.75,0.95,0.95}
+
+ \usepackage[colorlinks = true,
+            linkcolor = myaqua,
+            urlcolor  = blue,
+            citecolor = myaqua]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\baselinestretch}{1.2}
+
+% DEFINIÇÕES ESPECIAIS
+
+\setlength{\algomargin}{1.5em}
+
+\SetKw{De}{de}
+\SetKw{Passo}{com passo}
+\SetKw{Inteiro}{inteiro}
+\SetKw{Real}{real}
+\SetKw{Caractere}{caractere}
+\SetKw{Booleano}{booleano}
+\SetKw{Texto}{texto}
+\SetKw{Neutro}{neutro}
+\SetKw{Nulo}{nulo}
+\SetKw{End}{end}
+\SetKw{Cte}{cte}
+\SetKw{Var}{var}
+\SetKw{Nao}{não}
+\SetKw{E}{e}
+\SetKw{OU}{ou}
+\SetKw{Tipo}{tipo}
+\SetKw{Referencia}{ref}
+\SetKw{Ref}{ref}
+\SetKw{Tamanho}{tam}
+\SetKw{Arranjo}{arranjo de}
+\SetKw{ArranjoParam}{arranjo}
+\SetKw{Funcao}{função}
+\SetKw{Procedimento}{procedimento}
+\SetKw{Escreva}{escreva}
+\SetKw{Leia}{leia}
+\SetKw{Erro}{erro}
+\SetKw{Membro}{membro}
+\SetKw{Tupla}{tupla}
+\SetKw{Aloque}{aloque}
+\SetKw{Libere}{libere}
+\SetKwBlock{TAD}{tad}{fim}
+\SetKwBlock{Estrutura}{estrutura}{fim}
+\SetKwBlock{Programa}{programa}{fim}
+\SetKwBlock{DeclFunc}{função}{fim}
+\SetKwBlock{DeclProc}{procedimento}{fim}
+\SetKwBlock{Construtor}{construtor}{fim}
+\SetKwBlock{Outro}{caso contrário}{fim}
+%\SetKwSwitch{Selec}{Caso}{Outro}{caso}{seja}{igual a}{senão}{fim}
+%\SetKwSwitch{Switch}{Case}{Other}{switch}{do}{case}{otherwise}{endsw}
+\SetKwData{Falso}{falso}
+\SetKwData{Verdadeiro}{verdadeiro}
+\SetKwData{EstAluno}{Aluno}
+\SetKwFunction{TADConstrutor}{\textnormal{\_\_}construtor\textnormal{\_\_}}
+\SetKwComment{Comentario}{\textcolor{DarkGreen}{\#$\,$}}{}
+
+% Various parameters #1
+%\setlength{\textheight}{220mm}
+%\setlength{\topmargin}{-3.4mm}
+%\setlength{\textwidth}{160mm}
+%\setlength{\oddsidemargin}{0.5mm}
+%\setlength{\evensidemargin}{0.5mm}
+
+% Various parameters #2
+\setlength{\textheight}{229mm}
+\setlength{\topmargin}{-5.4mm}
+\setlength{\textwidth}{150mm}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+
+\definecolor{pink}{rgb}{1,0.5,0.5} % color values Red, Green, Blue
+\definecolor{DarkGreen}{rgb}{0.0,0.5,0.0} % color values Red, Green, Blue
+\definecolor{DarkBlue}{rgb}{0.0,0.0,0.3}
+\definecolor{lightgrey}{rgb}{0.90,0.90,0.90}
+
+%% Create a new float style, ideal for code fragments
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Algoritmo}
+
+
+\floatstyle{ruled}
+\newfloat{prog}{thp}{lop}
+\floatname{prog}{Programa}
+
+\lstset{
+language=C++,
+%basicstyle=\footnotesize\ttfamily,
+basicstyle=\scriptsize\ttfamily,
+%keywordstyle=\footnotesize\bfseries\sffamily,
+keywordstyle=\scriptsize\bfseries\color{blue}\sffamily,
+stringstyle=\scriptsize\color{red}\ttfamily,
+commentstyle=\scriptsize\color{DarkGreen}\ttfamily,
+morecomment=[l][\color{magenta}]{\#},
+showstringspaces=false,
+numbers=left,
+numberstyle=\footnotesize,
+stepnumber=1,
+numbersep=5pt,
+%backgroundcolor=\color{blue!05},
+backgroundcolor=\color{gray!35},
+showspaces=false,
+showtabs=false,
+escapeinside={(*}{*)}
+}
+
+% ******************************************************************************
+% The preamble begins here.
+% -------------------------
+%\title{Empty}
+%\author{Selan R. dos Santos}      % Declares the author's name.
+%\date{05 de Agosto, 2005}      % Deleting this command produces today's date.
+
+% ******************************************************************************
+% The document starts here.
+% -------------------------
+
+\begin{document}
+\pagenumbering{arabic}
+
+\pagestyle{fancy}%
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\lhead{\scriptsize{IMD0029 -- Estruturas de Dados Básicas I}}\rhead{\scriptsize Projeto ELIS, 2015.1}%
+\cfoot{\scriptsize Página \thepage}%
+
+% This affects itemize
+%\renewcommand{\labelitemi}{$\star$}
+
+
+
+\newcommand{\code}[1]{\texttt{\colorbox{lightgrey}{#1}}}
+
+
+
+%% This is just to avoid the header on th 1st page.
+\thispagestyle{empty}
+
+
+% =============================================================================
+% Cabeçalho Inicial.
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\Large\sc
+Universidade Federal do Rio Grande do Norte\\
+\large\sc
+%Centro de Ciências Exatas e da Terra\\
+Instituto Metrópole Digital \\*[0.3cm]
+
+\rm
+\normalsize
+Estruturas de Dados Básicas I $\bullet$ IMD0029\\
+  $\lhd$ Projeto de Programação $\rhd$\\[0.2cm]
+  {\it Programa \textbf{ELIS} ({\it \textbf{E}ditor de textos orientado a \textbf{LI}nha\textbf{S}})}\\[0.2cm]% Declares the document's title.
+%22 de julho de 2014\\*[1.0cm]
+\today\\*[1.0cm]
+\end{center}
+
+
+\section*{Apresentação}
+\label{sec:objetivos}
+
+O objetivo deste projeto de programação é utilizar as estruturas de dados do
+tipo \emph{lista encadeada} para a resolução de problemas práticos.
+Um dos pré-requisitos deste exercício é que estas estruturas de dados já estejam
+implementadas na forma de classes genéricas em C++.
+%
+A aplicação do TAD \emph{lista encadeada} será na construção de um editor de texto
+orientado a linhas.
+
+\tableofcontents
+
+\pagebreak
+\section{Introdução}
+\label{subsec:parteI:descricao}
+
+Um dos primeiros tipos de programas para editar textos eram orientados a linhas,
+ou seja, editava-se uma linha por vez (consultar verbete Wikipédia sobre
+\href{http://en.wikipedia.org/wiki/Ed_(text_editor)}{Ed}).
+Tais editores, denominados de \emph{editores orientado a linhas}, possuíam uma interface
+com usuário bem restrita mas, por outro lado, eram bem versáteis e
+adequados aos terminais textuais típicos da época do surgimento do computador.
+
+Posteriormente, estes editores evoluíram para os chamados \emph{editores de página cheia}.
+Mesmo assim, a influência dos primeiros editores de linhas foi tamanha que ainda
+hoje um dos editores preferidos pela comunidade de programadores, o \texttt{vi} ou \texttt{vim}, ainda
+utiliza uma sintaxe de comandos bem similar aos antigos editores de linhas.
+
+\section{Tarefa}
+\label{subsec:tarefa_parteI}
+
+Sua tarefa consiste em desenvolver um editor de linhas, denominado
+\texttt{elis} (\uline{E}ditor de \uline{LI}nha \uline{S}imples),
+que armazena o texto em uma lista encadeada, cada linha em um nó separado de uma
+lista encadeada de cadeia de caracteres (\emph{strings}).
+
+O programa \texttt{elis} opera em três modos exclusivos e distintos:
+\textsl{normal}, \textsl{edição} ou \textsl{comando}.
+No modo de \textsl{edição} deve ser exibido o \emph{prompt} `$\sim$ INSERT $\sim$`, para indicar qual é o estado atual. Neste modo é possível entrar com texto para compor uma linha.
+Pressionando-se \texttt{<ENTER>} a linha é finalizada e armazenada na lista
+encadeada; a seguir uma nova linha é automaticamente disponibilizada para edição.
+
+A Figura~\ref{fig:1} demonstra a utilização do programa para a criação
+de um arquivo fornecido como parâmetro (no caso, ``readme.txt'').
+Neste exemplo o programa está atuando apenas no modo \textsl{edição}.
+
+% ==============================================================================
+% Figura 2
+% ------------------------------------------------------------------------------
+\begin{figure}[!ht]
+% ------------------------------------------------------------------------------
+
+\begin{lstlisting}[numbers=none]
+(*\$*) ./elis readme.txt
+1> Esta é a primeira linha(*$\hookleftarrow$*)
+2> enquanto que esta é a segunda linha(*$\hookleftarrow$*)
+3> mais uma linha(*$\hookleftarrow$*)
+4> (*$\hookleftarrow$*)
+5> última linha editada(*$\hookleftarrow$*)
+\end{lstlisting}
+% -----------------------------------------------------------------------------
+   \caption  {Exemplo de uso do \texttt{elis} no modo \textsl{edição}.
+       O símbolo `$\hookleftarrow$' representa o pressionamento do \texttt{<ENTER>}.}
+   \label{fig:1}
+\end{figure}
+% ==============================================================================
+%\curvearrowleft
+
+	Para sair do modo \textsl{edição} e entrar no modo \textsl{normal} o usuário deve pressionar \texttt{<ESC>}, fazendo com que o programa exiba o \emph{prompt} de comando `$\sim$ NORMAL $\sim$'.
+Uma vez no modo \textsl{normal} o usuário pode utilizar \texttt{<j-k>} para descer ou subir de linha, respectivamente. Para sair do modo \textsl{normal} e entrar no modo \textsl{comando} o usuário deve pressionar \texttt{<:>}, mostrando o \emph{prompt} de comando `$\sim$ COMMAND INSERT $\sim$`. Enfim, enquanto neste modo o cliente pode efetuar qualquer um dos comandos descritos
+na Tabela~\ref{tab:cmds}.
+
+
+\begin{table}[htb!]
+\begin{center}
+\footnotesize
+\begin{tabular}{p{1.9cm}  p{12cm}} \toprule
+\textbf{\sc Comando}                       & \textbf{\sc Descrição} \\ \midrule
+\rule[-2mm]{0mm}{6mm}\texttt{W [<name>]}   & Salva todas as linhas do texto em um arquivo ascii \texttt{name}.
+                                             O comando sem o fornecimento de um nome simplesmente grava o texto no arquivo atual.
+                                             Se o nome do arquivo atual ainda não foi fornecido o programa deve solicitar um nome ao usuário.\\
+\rule[-2mm]{0mm}{6mm}\texttt{E <name>}     & Lê para a memória todas as linhas de texto do arquivo ascii \texttt{name}.
+                                             Se o arquivo indicado não existir um novo arquivo vazio \texttt{name} deve ser criado.\\
+\rule[-2mm]{0mm}{6mm}\texttt{I [n]}        & Entra no modo de \textsl{edição}, permitindo a inserção de texto \emph{antes} da linha \texttt{n}.
+                                             Se \texttt{n} não é fornecido, o texto é inserido \emph{antes} da linha atual.\\
+\rule[-2mm]{0mm}{6mm}\texttt{A [n]}        & Entra no modo de \textsl{edição}, permitindo a inserção de texto \emph{depois} da linha \texttt{n}.
+                                             Se \texttt{n} não é fornecido, o texto é inserido \emph{depois} da linha atual.\\
+\rule[-2mm]{0mm}{6mm}\texttt{M [n]}        & Torna \texttt{n} a linha atual.
+                                             Se \texttt{n} não é fornecido então a última linha do texto passa a ser a atual.\\
+\rule[-2mm]{0mm}{6mm}\texttt{D [n [m]]}    & Remove linhas \texttt{n} até \texttt{m}.
+                                             Se apenas \texttt{n} é fornecido, remove-se a linha \texttt{n}.
+                                             Se nenhum número é fornecido, remove-se a linha atual.\\
+\rule[-2mm]{0mm}{6mm}\texttt{H}            & Exibe um texto de ajuda, explicando de forma resumida quais são os comandos do programa.\\
+\rule[-2mm]{0mm}{6mm}\texttt{Q}            & Encerra o programa. Se o texto atual não tiver sido salvo, o programa deve exibir uma mensagem indicando o fato e confirmar a operação.\\
+
+\bottomrule
+\end{tabular}
+\end{center}
+\normalsize
+\caption{Lista de comandos do programa \texttt{elis}. O símbolo `[{\ }]' indica os argumentos opcionais.}
+
+\label{tab:cmds}
+\end{table}
+
+A Figura~\ref{fig:2} apresenta um exemplo de interação com o programa \texttt{elis},
+no qual algumas operações foram executadas sobre o texto criado na Figura~\ref{fig:1}.
+Os comandos podem ser fornecidos através de letras maiúsculas ou minúsculas.
+
+% ==============================================================================
+% Figura 2
+% ------------------------------------------------------------------------------
+\begin{figure}[!ht]
+% ------------------------------------------------------------------------------
+
+\begin{lstlisting}[numbers=none]
+1> Esta é a primeira linha
+2> enquanto que esta é a segunda linha
+3> mais uma linha
+4>
+5*> última linha editada(*$\looparrowright$*)
+: I 3
+1> Esta é a primeira linha
+2> enquanto que esta é a segunda linha
+3> nova linha inserida(*$\hookleftarrow$*)
+4*> mais uma linha inserida com o comando 'I'!(*$\looparrowright$*)
+5> mais uma linha
+6>
+7> última linha editada(*$\looparrowright$*)
+: D 6
+1> Esta é a primeira linha
+2> enquanto que esta é a segunda linha
+3> nova linha inserida
+4*> mais uma linha inserida com o comando 'I'!(*$\looparrowright$*)
+5> mais uma linha
+6> última linha editada
+: A 6
+1> Esta é a primeira linha
+2> enquanto que esta é a segunda linha
+3> nova linha inserida
+4> mais uma linha inserida com o comando 'I'!
+5> mais uma linha
+6> última linha editada
+7> inserindo linha depois(*$\hookleftarrow$*)
+8*>(*$\looparrowright$*)
+: W
+: Q
+\end{lstlisting}
+% -----------------------------------------------------------------------------
+   \caption  {Exemplo de uso do \texttt{elis} no modo \textsl{comando}.
+       O símbolo `$\hookleftarrow$' representa o pressionamento do \texttt{<ENTER>} e
+       o símbolo `$\looparrowright$' representa o pressionamento do \texttt{<ESC>}.}
+   \label{fig:2}
+\end{figure}
+% ==============================================================================
+%\curvearrowleft
+
+Note que a numeração que aparece na primeira coluna, por exemplo  ``\texttt{3>}'',
+serve apenas para identificar a ordem da linha no texto e, desta forma, não
+faz parte do texto em si.
+Portanto, esta numeração \textbf{não} deve aparecer no arquivo ascii gravado pelo programa
+\texttt{elis}.
+
+De acordo com a descrição dos comandos apresentados na Tabela~\ref{tab:cmds}, um
+importante conceito é o de \textbf{linha atual}.
+A linha atual consiste em uma linha ``selecionada'' sobre o qual as operação serão
+realizadas, caso nenhuma outra linha seja indicada.
+O programa \texttt{elis} sempre possui uma linha atual ativada, normalmente a ultima
+linha editada.
+O programa deve sinalizar para o usuário qual a linha atual através de um `*' logo
+após a indicação do número da linha, como em ``\texttt{7*>}'' no final da Figura~\ref{fig:2}.
+
+
+\section{Desafios de Implementação}
+\label{subsec:parteI:desafios}
+
+% DANIEL MEXEU
+% APAGAR TUDO DESDE LINHA EM DIANTE ATÉ "DANIEL PAROU".
+\subsection{Pré-Requisitos}
+
+Como forma de facilitar a visualização em terminal do projeto, foi adotado pelos monitores uma estratégia utilizando a biblioteca \texttt{ncurses} (para saber mais sobre a biblioteca \href{http://bit.do/eAJR6}{ncurses}) do \texttt{C++}.
+
+% Eles que pesquisem como instalar.
+
+%TODO LINK PARA TEASER
+
+Esta estratégia consiste na disponibilização para vocês de uma pequena \texttt{API}, que deverá facilitar o trabalho quanto à visualização gráfica do projeto. Em outras palavras, a tarefa de vocês focará integralmente na criação das \texttt{TADs} adequadas para a programação \texttt{back-end} do projeto. Recomenda-se olhem a \texttt{API} para saberem como utilizá-la. Este é um \href{}{\textit{teaser}} mostrando o \texttt{elis} em funcionamento com \emph{ncurses}. 
+
+No entanto, notem que ainda lhes caberá a utilização desta \texttt{API}. Será enviado à vocês um arquivo contendo as funcões disponibilizadas. \textbf{Importante lembrá-los da chamada das funções dadas, pois vocês devem saber quando executá-las, conforme novas informações forem sendo inseridas.}
+% Disponibilizar funções
+
+\subsection{Implementação}
+
+% DANIEL PAROU AQUI
+Um dos elementos de desafio deste trabalho é escolher a estrutura de dados mais
+apropriada.
+Para melhor identificar as estruturas necessárias, tente antecipar todas as
+operações que serão necessárias.
+A partir desta informação, decida qual estrutura de dados utilizar.
+Leve em consideração fatores como a eficiência geral do programa (complexidade temporal) e o
+consumo de memória (complexidade espacial).
+
+O próximo desafio consiste em desenvolver sua própria rotina de leitura de caracteres
+para formar uma cadeia.
+Isto deve ser feito de forma a permitir a captura de teclas especiais, como \texttt{<ENTER>}
+e \texttt{<ESC>}.
+%O Apêndice~\ref{apendice:1} fornece um programa como ponto de partida.
+%Este programa realiza a leitura de uma cadeia de caracteres,
+%um caractere por vez.
+
+Para facilitar o desenvolvimento do projeto, é muito importante compreender o
+\href{http://en.wikipedia.org/wiki/State_diagram}{\emph{diagrama de estados}} que
+o \texttt{elis} pode assumir em execução.
+Veja, por exemplo, este \href{https://darkpan.com/files/vim.svg}{diagrama de estados do \texttt{vim}}.
+Portanto, recomenda-se a elaboração de um diagrama de estados para o \texttt{elis} antes de iniciar
+a implementação do projeto.
+
+Outro desafio consiste em prever e tratar de forma apropriada o maior número possível
+de erros de interação usuário-programa.
+Por exemplo, o que acontece se o usuário pressionar ``\texttt{:A 10}'' em um arquivo
+que contém apenas 2 linhas?
+Ou então se o usuário fornecer o comando ``\texttt{:D 10 5}'', devemos indicar
+um erro ou deduzir que o programa vai apagar da linha 5 até a 10?
+Pensar em uma boa interface e um tratamento de erros robusto é fundamental para
+o desenvolvimento de \emph{software} de qualidade.
+
+Pontos extras estão disponíveis apenas para os trabalhos \textbf{completos}.
+Isso quer dizer que os projetos que implementaram todas as funcionalidades
+descritas neste documento podem ganhar mais pontos se ampliarem a funcionalidade
+do \texttt{elis}.
+Isto pode ser feito de várias maneiras, como por exemplo 
+acrescentando comandos para procurar (\textit{find} ou \texttt{F}) palavras
+ou fragmentos de palavras, procurar e substituir, copiar linhas, prover
+suporte para desfazer (\textit{undo} ou \texttt{U}), etc.
+
+\section{Avaliação do Programa}
+\label{sec:avaliacao}
+
+Para a implementação deste projeto \textbf{é obrigatório} a utilização das
+classes correspondente a estruturas de dados que foram apresentadas em
+sala de aula.
+Não serão aceitas soluções que utilizem as estruturas de dados da biblioteca
+externas, como STL (e.g.\ \code{list}, \code{vector}, etc.)
+ou \texttt{boost}, por exemplo.
+
+O programa completo deverá ser entregue sem erros de compilação, testado e totalmente
+documentado.
+O programa \texttt{elis} será avaliado sob os seguintes critérios:-
+\begin{itemize*}
+    \item Comando W funciona corretamente ($10 \%$)
+    \item Comando H funciona corretamente ($5 \%$)
+    \item Comando E funciona corretamente ($10 \%$)
+    \item Comando I funciona corretamente ($15 \%$)
+    \item Comando A funciona corretamente ($15 \%$)
+    \item Comando M funciona corretamente ($5 \%$)
+    \item Comando D funciona corretamente ($20 \%$)
+    \item Trata de maneira compreensiva possíveis erros de entrada ($10 \%$)
+    \item Funcionamento geral correto, como por exemplo ser capaz
+        de alterar entre os estados de edição e de comandos.($10 \%$)
+\end{itemize*}
+
+A pontuação acima não é definitiva e imutável.
+Ela serve apenas como um guia de como o trabalho será avaliado em linhas gerais.
+É possível a realização de ajustes nas pontuações indicadas visando adequar a pontuação
+ao nível de dificuldade dos itens solicitados.
+
+Os itens abaixo correspondem à descontos, ou seja, pontos que podem ser retirados
+da pontuação total obtida com os itens anteriores:-
+\begin{itemize*}
+    \item[$\circ$] Presença de erros de compilação e/ou execução (até $-20 \%$)
+    \item[$\circ$] Falta de documentação do programa com Doxygen (até $-10 \%$)
+    \item[$\circ$] Vazamento de memória identificado com o valgrind (até $-10 \%$)
+    \item[$\circ$] Falta ou incompletude do arquivo \texttt{README.md} (até $-10 \%$)
+\end{itemize*}
+
+Você deve escrever um arquivo \texttt{README.md}
+(formato \href{http://daringfireball.net/projects/markdown/syntax}{Markdown}) com, pelo menos, informações sobre
+como o programa foi implementado, i.e.\ quais estruturas de dados foram utilizadas,
+explicações sobre o funcionamento de cada um de seus comandos (com exemplos),
+indicação dos componentes da equipe desenvolvedora (com email),
+instruções para compilação e instalação.
+Fique à vontade para incluir no arquivo \texttt{README.md} qualquer outra informação
+que a equipe julgar relevante.
+
+\subsection*{Boas práticas de programação}
+Recomenda-se fortemente o uso das seguintes ferramentas:-
+\begin{itemize*}
+    \item Doxygen: para a documentação de código e das classes;
+    \item Git: para o controle de versões e desenvolvimento colaborativo;
+    \item Valgrind: para verificação de vazamento de memória;
+    \item gdb: para depuração do código; e
+    \item Makefile: para gerenciar o processo de compilação do projeto.
+\end{itemize*}
+
+Recomenda-se também que sejam realizados \href{http://en.wikipedia.org/wiki/Software_testing}{testes}
+de utilização do programa em várias situações.
+Procure organizar seu código em várias pastas, conforme vários exemplos apresentados em
+sala de aula, com pastas como
+\texttt{src} (arquivos \texttt{.cpp}),
+\texttt{include} (arquivos \texttt{.h}),
+\texttt{bin} (arquivos \texttt{.o} e executável) e
+\texttt{data} (arquivos de entrada e saída de dados).
+
+Uma forma de validar o seu programa é inserir diretivas de compilação condicional
+para compilar o seu projeto ora usando suas classes (por exemplo, \code{Lista}), ora
+usando classes equivalentes do STL (\code{vector}, \code{list}, etc.).
+Esta estratégia permite isolar erros no programa \texttt{elis} de erros na implementação
+das classes básicas.
+
+\section{Autoria e Política de Colaboração}
+%
+O trabalho pode ser realizado \textbf{individualmente} ou em \textbf{duplas},
+sendo que no último caso é importante, dentro do possível,
+dividir as tarefas igualmente entre os componentes.
+
+Qualquer equipe pode ser convocada para uma entrevista.
+O objetivo da entrevista é duplo: confirmar a autoria do trabalho e
+determinar a contribuição real de cada componente em relação ao trabalho.
+Durante a entrevista os membros da equipe devem ser capazes de explicar,
+com desenvoltura, qualquer trecho do trabalho, mesmo que o código tenha
+sido desenvolvido pelo outro membro da equipe.
+Portanto, é possível que, após a entrevista, ocorra redução da nota geral do trabalho ou
+ajustes nas notas individuais, de maneira a refletir a verdadeira contribuição
+de cada membro, conforme determinado na entrevista.
+
+O trabalho em cooperação entre alunos da turma é estimulado.
+É aceitável a discussão de ideias e estratégias.
+Note, contudo, que esta interação \textbf{não} deve ser entendida como permissão
+para utilização de código ou parte de código de outras equipes,
+o que pode caracterizar a situação de plágio.
+Em resumo, tenha o cuidado de escrever seus próprios programas.
+
+Trabalhos plagiados receberão nota \textbf{zero} automaticamente,
+independente de quem seja o verdadeiro autor dos trabalhos infratores.
+Fazer uso de qualquer assistência sem reconhecer os créditos apropriados
+é considerado \textbf{plagiarismo}.
+Quando submeter seu trabalho, forneça a citação e reconhecimentos necessários.
+Isso pode ser feito pontualmente nos comentários no início do código, ou,
+de maneira mais abrangente, no arquivo texto \texttt{README.md}.
+Além disso, no caso de receber assistência, certifique-se de que ela lhe
+é dada de maneira genérica, ou seja, de forma que não envolva alguém
+tendo que escrever código por você.
+
+
+\section{Entrega}
+\label{sec:entrega}
+
+Você deve submeter um único arquivo com a compactação da pasta do seu projeto.
+Se for o caso, forneça também o link Git para o seu projeto.
+O arquivo compactado deve ser enviado \textbf{apenas} através da opção Tarefas
+da turma Virtual do Sigaa, em data divulgada no sistema.
+%\textbf{Note que qualquer envio de trabalho por email será desconsiderado!}
+
+
+%----------------------------------------------------------------------
+
+\center $\blacktriangleleft$  FIM $\blacktriangleright$
+
+\end{document}               % End of document.
