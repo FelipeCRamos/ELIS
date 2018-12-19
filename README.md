@@ -6,7 +6,7 @@ ELIS is a simple text editor made with C++ using `ncurses` and double-linked lis
 This project aims to make use of the power from the double-linked list data
 structure for the development of a simple text editor like Vi.
 
-<!-- [image-here] -->
+![ELIS test](guide/knis.png)
 
 ## Summary
 + [Dependencies](#dependencies)
